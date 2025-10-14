@@ -11,6 +11,13 @@ import NoticeBoard from './pages/NoticeBoard';
 import AdminDashboard from './pages/AdminDashboard';
 import StrayDogReport from './pages/StrayDogReport';
 import NotFound from './pages/NotFound';
+import OldAgePension from './pages/OldAgePension';
+import WidowPension from './pages/WidowPension';
+import UnmarriedWomenPension from './pages/UnmarriedWomenPension';
+import DisabilityPension from './pages/DisabilityPension';
+import AgriculturePension from './pages/AgriculturePension';
+import Vayomithram from './pages/Vayomithram';
+import Snehasparsham from './pages/Snehasparsham';
 import { Toaster } from './components/ui/sonner';
 
 function ProtectedRoute({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) {
@@ -37,6 +44,13 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/notices" element={<NoticeBoard />} />
+          <Route path="/notices/oldage" element={<OldAgePension />} />
+          <Route path="/notices/widow" element={<WidowPension />} />
+          <Route path="/notices/unmarried" element={<UnmarriedWomenPension />} />
+          <Route path="/notices/disability" element={<DisabilityPension />} />
+          <Route path="/notices/agriculture" element={<AgriculturePension />} />
+          <Route path="/notices/vayomithram" element={<Vayomithram />} />
+          <Route path="/notices/snehasparsham" element={<Snehasparsham />} />
           <Route path="/stray-dog-report" element={<StrayDogReport />} />
           <Route 
             path="/post-issue" 
