@@ -1,7 +1,12 @@
 import pg from 'pg';
+import dns from 'dns';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+// Supabase direct connections may only have IPv6 addresses
+// Use verbatim DNS order so Node.js uses IPv6 when available
+dns.setDefaultResultOrder('verbatim');
 
 const { Pool } = pg;
 
