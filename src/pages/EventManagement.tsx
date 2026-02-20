@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { usePanchayat } from '../lib/PanchayatContext';
 import { eventsAPI } from '../lib/api';
+import CertificateTemplate, { useDownloadCertificate } from '../components/CertificateTemplate';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -26,6 +27,8 @@ import {
   ExternalLink,
   Link as LinkIcon,
   MessageCircle,
+  Award,
+  Loader2,
 } from 'lucide-react';
 
 interface EventData {
@@ -80,6 +83,11 @@ export default function EventManagement() {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [showRegistrations, setShowRegistrations] = useState(false);
   const [showQRFor, setShowQRFor] = useState<string | null>(null);
+  const [certRecipient, setCertRecipient] = useState<string | null>(null);
+  const [generatingCerts, setGeneratingCerts] = useState(false);
+  const [generatingFor, setGeneratingFor] = useState<string | null>(null);
+  const certRef = useRef<HTMLDivElement>(null);
+  const { download: downloadCertificate } = useDownloadCertificate();
 
   // Form state
   const [title, setTitle] = useState('');
@@ -494,15 +502,50 @@ export default function EventManagement() {
         )}
 
         {/* Registrations Dialog */}
-        <Dialog open={showRegistrations} onOpenChange={setShowRegistrations}>
-          <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <Dialog open={showRegistrations} onOpenChange={(open) => { setShowRegistrations(open); if (!open) setCertRecipient(null); }}>
+          <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Registrations — {selectedEvent?.title}</DialogTitle>
               <DialogDescription>
                 {registrations.length} registration{registrations.length !== 1 ? 's' : ''}, {registrations.reduce((sum, r) => sum + r.num_attendees, 0)} total attendees
               </DialogDescription>
             </DialogHeader>
-            <div className="mt-4">
+
+            {/* Generate All Certificates button */}
+            {registrations.length > 0 && selectedEvent && (
+              <div className="flex items-center gap-2 mt-2">
+                <Button
+                  size="sm"
+                  className="bg-amber-600 hover:bg-amber-700"
+                  disabled={generatingCerts}
+                  onClick={async () => {
+                    if (!selectedEvent || !certRef.current) return;
+                    setGeneratingCerts(true);
+                    toast.info(`Generating ${registrations.length} certificates...`);
+                    for (let i = 0; i < registrations.length; i++) {
+                      setCertRecipient(registrations[i].name);
+                      // Wait for render
+                      await new Promise(r => setTimeout(r, 400));
+                      if (certRef.current) {
+                        const filename = `Certificate_${registrations[i].name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_')}`;
+                        await downloadCertificate(certRef.current, filename);
+                      }
+                    }
+                    setGeneratingCerts(false);
+                    setCertRecipient(null);
+                    toast.success(`${registrations.length} certificates downloaded!`);
+                  }}
+                >
+                  {generatingCerts ? (
+                    <><Loader2 className="h-4 w-4 mr-1 animate-spin" /> Generating...</>
+                  ) : (
+                    <><Award className="h-4 w-4 mr-1" /> Generate All Certificates</>
+                  )}
+                </Button>
+              </div>
+            )}
+
+            <div className="mt-2">
               {registrations.length === 0 ? (
                 <div className="text-center py-8">
                   <Users className="h-12 w-12 mx-auto text-gray-300 mb-3" />
@@ -513,19 +556,50 @@ export default function EventManagement() {
                 <div className="space-y-3">
                   {registrations.map((reg, idx) => (
                     <Card key={reg.id}>
-                      <CardContent className="p-4 flex items-center justify-between">
-                        <div>
-                          <div className="font-medium">{idx + 1}. {reg.name}</div>
-                          <div className="text-sm text-gray-500 flex items-center gap-3 mt-1 flex-wrap">
-                            <span className="flex items-center gap-1"><Phone className="h-3 w-3" /> {reg.phone}</span>
-                            {reg.email && <span className="flex items-center gap-1"><Mail className="h-3 w-3" /> {reg.email}</span>}
-                            {reg.ward && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {reg.ward}</span>}
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium">{idx + 1}. {reg.name}</div>
+                            <div className="text-sm text-gray-500 flex items-center gap-3 mt-1 flex-wrap">
+                              <span className="flex items-center gap-1"><Phone className="h-3 w-3" /> {reg.phone}</span>
+                              {reg.email && <span className="flex items-center gap-1"><Mail className="h-3 w-3" /> {reg.email}</span>}
+                              {reg.ward && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {reg.ward}</span>}
+                            </div>
                           </div>
-                        </div>
-                        <div className="text-right">
-                          <Badge variant="secondary">{reg.num_attendees} {reg.num_attendees === 1 ? 'person' : 'people'}</Badge>
-                          <div className="text-xs text-gray-400 mt-1">
-                            {new Date(reg.registered_at).toLocaleDateString('en-IN')}
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-amber-700 border-amber-300 hover:bg-amber-50"
+                              disabled={generatingFor === reg.id}
+                              onClick={async () => {
+                                if (!selectedEvent) return;
+                                setGeneratingFor(reg.id);
+                                setCertRecipient(reg.name);
+                                // Wait for render
+                                await new Promise(r => setTimeout(r, 400));
+                                if (certRef.current) {
+                                  const filename = `Certificate_${reg.name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_')}`;
+                                  const ok = await downloadCertificate(certRef.current, filename);
+                                  if (ok) toast.success(`Certificate for ${reg.name} downloaded!`);
+                                  else toast.error('Failed to generate certificate');
+                                }
+                                setGeneratingFor(null);
+                                setCertRecipient(null);
+                              }}
+                            >
+                              {generatingFor === reg.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <><Award className="h-3.5 w-3.5 mr-1" /> Certificate</>
+                              )}
+                            </Button>
+                            <div className="text-right">
+                              <Badge variant="secondary">{reg.num_attendees} {reg.num_attendees === 1 ? 'person' : 'people'}</Badge>
+                              <div className="text-xs text-gray-400 mt-1">
+                                {new Date(reg.registered_at).toLocaleDateString('en-IN')}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -536,6 +610,22 @@ export default function EventManagement() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Hidden certificate render area (offscreen for html2canvas) */}
+        {certRecipient && selectedEvent && (
+          <div style={{ position: 'fixed', left: '-9999px', top: 0, zIndex: -1 }}>
+            <CertificateTemplate
+              ref={certRef}
+              recipientName={certRecipient}
+              eventTitle={selectedEvent.title}
+              eventDate={selectedEvent.event_date}
+              panchayat={selectedEvent.panchayat}
+              district={selectedEvent.district}
+              venue={selectedEvent.venue}
+              category={selectedEvent.category}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
