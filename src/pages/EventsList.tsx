@@ -252,32 +252,48 @@ export default function EventsList() {
         </Card>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 mb-5 bg-gray-100 rounded-xl p-1 w-fit">
+        <div className="flex items-center gap-0 mb-6 border-b border-gray-200">
           <button
             onClick={() => setActiveTab('upcoming')}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`relative px-5 py-3 text-sm font-semibold transition-all ${
               activeTab === 'upcoming'
-                ? 'bg-white text-green-700 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'text-green-700'
+                : 'text-gray-400 hover:text-gray-600'
             }`}
           >
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5" />
-              Upcoming ({upcomingEvents.length})
+            <span className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              Upcoming
+              <span className={`ml-0.5 text-xs px-2 py-0.5 rounded-full font-bold ${
+                activeTab === 'upcoming'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-gray-100 text-gray-400'
+              }`}>{upcomingEvents.length}</span>
             </span>
+            {activeTab === 'upcoming' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-600 rounded-full" />
+            )}
           </button>
           <button
             onClick={() => setActiveTab('past')}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`relative px-5 py-3 text-sm font-semibold transition-all ${
               activeTab === 'past'
-                ? 'bg-white text-gray-700 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'text-gray-700'
+                : 'text-gray-400 hover:text-gray-600'
             }`}
           >
-            <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              Past ({pastEvents.length})
+            <span className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Past
+              <span className={`ml-0.5 text-xs px-2 py-0.5 rounded-full font-bold ${
+                activeTab === 'past'
+                  ? 'bg-gray-200 text-gray-700'
+                  : 'bg-gray-100 text-gray-400'
+              }`}>{pastEvents.length}</span>
             </span>
+            {activeTab === 'past' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-500 rounded-full" />
+            )}
           </button>
         </div>
 
@@ -356,58 +372,56 @@ export default function EventsList() {
                   {/* Top color bar */}
                   <div className={`h-1.5 ${upcoming ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 'bg-gray-300'}`} />
 
-                  <CardContent className="p-5">
+                  <CardContent className="p-5 space-y-0">
                     {/* Category + Status badges */}
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${cat.bg} ${cat.text}`}>
-                          <span>{cat.icon}</span>
-                          <span className="capitalize">{event.category}</span>
-                        </span>
-                      </div>
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${cat.bg} ${cat.text}`}>
+                        <span className="text-sm leading-none">{cat.icon}</span>
+                        <span className="capitalize">{event.category}</span>
+                      </span>
                       {upcoming ? (
-                        <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-0 text-[11px] font-semibold">
+                        <Badge className="bg-green-50 text-green-700 hover:bg-green-50 border border-green-200 text-[11px] font-semibold px-2.5 py-0.5">
                           <Sparkles className="h-3 w-3 mr-1" />
                           Upcoming
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="text-gray-400 border-gray-200 text-[11px]">
+                        <Badge variant="outline" className="text-gray-400 border-gray-200 text-[11px] px-2.5 py-0.5">
                           Completed
                         </Badge>
                       )}
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg font-bold text-gray-900 mb-1.5 line-clamp-2 group-hover:text-green-700 transition-colors">
+                    <h3 className="text-[17px] font-bold text-gray-900 mb-1 leading-snug line-clamp-2 group-hover:text-green-700 transition-colors">
                       {event.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-500 mb-4 line-clamp-2 leading-relaxed">{event.description}</p>
+                    <p className="text-[13px] text-gray-500 mb-4 line-clamp-2 leading-relaxed">{event.description}</p>
 
                     {/* Event details */}
-                    <div className="space-y-2.5 mb-4">
+                    <div className="space-y-3 mb-4 border-t border-gray-100 pt-3">
                       {/* Date & Time */}
-                      <div className="flex items-start gap-2.5">
-                        <div className="mt-0.5 h-8 w-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                          <Calendar className="h-4 w-4 text-green-600" />
+                      <div className="flex items-center gap-3">
+                        <div className="h-9 w-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                          <Calendar className="h-[18px] w-[18px] text-green-600" />
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-gray-800">{formatDate(event.event_date)}</div>
-                          <div className="text-xs text-gray-400">{formatTime(event.event_date)}
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-gray-800 leading-tight">{formatDate(event.event_date)}</div>
+                          <div className="text-xs text-gray-400 mt-0.5">{formatTime(event.event_date)}
                             {event.event_end_date && ` — ${formatTime(event.event_end_date)}`}
                           </div>
                         </div>
                       </div>
 
                       {/* Venue */}
-                      <div className="flex items-start gap-2.5">
-                        <div className="mt-0.5 h-8 w-8 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
-                          <MapPin className="h-4 w-4 text-orange-500" />
+                      <div className="flex items-center gap-3">
+                        <div className="h-9 w-9 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                          <MapPin className="h-[18px] w-[18px] text-orange-500" />
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-gray-800">{event.venue}</div>
-                          <div className="text-xs text-gray-400">
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-gray-800 leading-tight truncate">{event.venue}</div>
+                          <div className="text-xs text-gray-400 mt-0.5">
                             {event.panchayat}, {event.district}
                             {event.ward && ` · ${event.ward}`}
                           </div>
@@ -416,16 +430,16 @@ export default function EventsList() {
 
                       {/* Participants */}
                       {event.max_participants ? (
-                        <div className="flex items-start gap-2.5">
-                          <div className="mt-0.5 h-8 w-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
-                            <Users className="h-4 w-4 text-purple-500" />
+                        <div className="flex items-center gap-3">
+                          <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
+                            <Users className="h-[18px] w-[18px] text-violet-500" />
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm font-medium text-gray-800">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline justify-between mb-1">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {event.total_attendees} / {event.max_participants}
                               </span>
-                              <span className={`text-xs font-medium ${isFull ? 'text-red-500' : 'text-gray-400'}`}>
+                              <span className={`text-[11px] font-semibold ${isFull ? 'text-red-500' : 'text-gray-400'}`}>
                                 {isFull ? 'Full' : `${Math.round(spotsUsed)}% filled`}
                               </span>
                             </div>
@@ -436,9 +450,9 @@ export default function EventsList() {
                           </div>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2.5">
-                          <div className="h-8 w-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
-                            <Users className="h-4 w-4 text-purple-500" />
+                        <div className="flex items-center gap-3">
+                          <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
+                            <Users className="h-[18px] w-[18px] text-violet-500" />
                           </div>
                           <span className="text-sm text-gray-600">
                             {event.total_attendees} registered · Open for all
@@ -449,16 +463,16 @@ export default function EventsList() {
 
                     {/* Countdown / CTA */}
                     {upcoming && event.is_active ? (
-                      <div className="space-y-2.5">
+                      <div className="space-y-2.5 border-t border-gray-100 pt-3">
                         {!isFull && (
-                          <div className="flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 rounded-lg px-3 py-1.5">
-                            <Clock className="h-3 w-3" />
+                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-amber-600 bg-amber-50/80 rounded-lg px-3 py-2">
+                            <Clock className="h-3.5 w-3.5" />
                             {getTimeUntil(event.event_date)}
                           </div>
                         )}
                         <Link to={`/events/${event.id}/register`} className="block">
                           <Button
-                            className={`w-full font-semibold transition-all ${
+                            className={`w-full h-11 font-semibold text-[13px] rounded-xl transition-all ${
                               isFull
                                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100'
                                 : 'bg-green-600 hover:bg-green-700 shadow-sm hover:shadow-md'
@@ -466,25 +480,27 @@ export default function EventsList() {
                             disabled={isFull}
                           >
                             {isFull ? (
-                              <span className="flex items-center gap-2">
+                              <span className="flex items-center justify-center gap-2">
                                 <Users className="h-4 w-4" /> Event Full
                               </span>
                             ) : (
-                              <span className="flex items-center gap-2">
+                              <span className="flex items-center justify-center gap-2">
                                 <UserPlus className="h-4 w-4" /> Register Now
-                                <ArrowRight className="h-4 w-4 ml-auto group-hover:translate-x-1 transition-transform" />
+                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                               </span>
                             )}
                           </Button>
                         </Link>
                       </div>
                     ) : upcoming && !event.is_active ? (
-                      <Button className="w-full bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100" disabled>
-                        Registration Closed
-                      </Button>
+                      <div className="border-t border-gray-100 pt-3">
+                        <Button className="w-full h-11 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100 text-[13px]" disabled>
+                          Registration Closed
+                        </Button>
+                      </div>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-xs text-gray-400 bg-gray-50 rounded-lg px-3 py-2">
-                        <Clock className="h-3 w-3" />
+                      <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 bg-gray-50 rounded-lg px-3 py-2.5 border-t border-gray-100 mt-1">
+                        <Clock className="h-3.5 w-3.5" />
                         Event ended · {event.registration_count} people registered
                       </div>
                     )}

@@ -28,7 +28,7 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
           width: '1056px',
           height: '748px',
           position: 'relative',
-          background: 'linear-gradient(135deg, #fdf8ef 0%, #fefcf6 30%, #fdf5e6 60%, #fef9f0 100%)',
+          background: '#fdf8ef',
           fontFamily: 'Georgia, "Times New Roman", serif',
           overflow: 'hidden',
         }}
@@ -52,72 +52,127 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
           }}
         />
 
-        {/* Top-left corner decoration */}
-        <svg
-          style={{ position: 'absolute', top: 0, left: 0 }}
-          width="200"
-          height="200"
-          viewBox="0 0 200 200"
-        >
-          <defs>
-            <linearGradient id="gold1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#d4a52a" />
-              <stop offset="30%" stopColor="#f0d77a" />
-              <stop offset="60%" stopColor="#c89b2a" />
-              <stop offset="100%" stopColor="#a67c00" />
-            </linearGradient>
-          </defs>
-          <path d="M0,0 L180,0 C120,20 60,60 40,100 C20,140 10,160 0,180 Z" fill="url(#gold1)" opacity="0.4" />
-          <path d="M0,0 L130,0 C90,15 45,45 30,75 C15,105 8,120 0,140 Z" fill="url(#gold1)" opacity="0.5" />
-          <path d="M0,0 L80,0 C55,12 30,35 20,55 C10,75 5,85 0,100 Z" fill="url(#gold1)" opacity="0.7" />
-        </svg>
+        {/* Top-left corner decoration - CSS divs instead of cross-referenced SVG gradients */}
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '-20px',
+            left: '-20px',
+            width: '180px',
+            height: '180px',
+            background: 'linear-gradient(135deg, #d4a52a 0%, #f0d77a 30%, #c89b2a 60%, #a67c00 100%)',
+            opacity: 0.35,
+            transform: 'rotate(-45deg)',
+            transformOrigin: 'center',
+            borderRadius: '0 0 80% 0',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '-30px',
+            left: '-30px',
+            width: '130px',
+            height: '130px',
+            background: 'linear-gradient(135deg, #d4a52a 0%, #f0d77a 40%, #c89b2a 100%)',
+            opacity: 0.5,
+            transform: 'rotate(-45deg)',
+            transformOrigin: 'center',
+            borderRadius: '0 0 70% 0',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '-35px',
+            left: '-35px',
+            width: '90px',
+            height: '90px',
+            background: 'linear-gradient(135deg, #f0d77a 0%, #c89b2a 50%, #a67c00 100%)',
+            opacity: 0.7,
+            transform: 'rotate(-45deg)',
+            transformOrigin: 'center',
+            borderRadius: '0 0 60% 0',
+          }} />
+        </div>
 
         {/* Top-right corner decoration */}
-        <svg
-          style={{ position: 'absolute', top: 0, right: 0, transform: 'scaleX(-1)' }}
-          width="180"
-          height="180"
-          viewBox="0 0 180 180"
-        >
-          <path d="M0,0 L160,0 C110,18 55,55 35,90 C18,125 9,145 0,165 Z" fill="url(#gold1)" opacity="0.25" />
-          <path d="M0,0 L100,0 C70,14 38,40 25,65 C12,90 6,100 0,115 Z" fill="url(#gold1)" opacity="0.35" />
-        </svg>
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '180px', height: '180px', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            top: '-20px',
+            right: '-20px',
+            width: '160px',
+            height: '160px',
+            background: 'linear-gradient(225deg, #d4a52a 0%, #f0d77a 30%, #c89b2a 60%, #a67c00 100%)',
+            opacity: 0.25,
+            transform: 'rotate(45deg)',
+            transformOrigin: 'center',
+            borderRadius: '0 0 0 80%',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '-30px',
+            right: '-30px',
+            width: '100px',
+            height: '100px',
+            background: 'linear-gradient(225deg, #d4a52a 0%, #f0d77a 50%, #c89b2a 100%)',
+            opacity: 0.35,
+            transform: 'rotate(45deg)',
+            transformOrigin: 'center',
+            borderRadius: '0 0 0 70%',
+          }} />
+        </div>
 
         {/* Bottom-right corner decoration */}
-        <svg
-          style={{ position: 'absolute', bottom: 0, right: 0, transform: 'rotate(180deg)' }}
-          width="180"
-          height="180"
-          viewBox="0 0 180 180"
-        >
-          <path d="M0,0 L160,0 C110,18 55,55 35,90 C18,125 9,145 0,165 Z" fill="url(#gold1)" opacity="0.25" />
-          <path d="M0,0 L100,0 C70,14 38,40 25,65 C12,90 6,100 0,115 Z" fill="url(#gold1)" opacity="0.35" />
-        </svg>
+        <div style={{ position: 'absolute', bottom: 0, right: 0, width: '180px', height: '180px', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute',
+            bottom: '-20px',
+            right: '-20px',
+            width: '160px',
+            height: '160px',
+            background: 'linear-gradient(315deg, #d4a52a 0%, #f0d77a 30%, #c89b2a 60%, #a67c00 100%)',
+            opacity: 0.25,
+            transform: 'rotate(-45deg)',
+            transformOrigin: 'center',
+            borderRadius: '80% 0 0 0',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '-30px',
+            right: '-30px',
+            width: '100px',
+            height: '100px',
+            background: 'linear-gradient(315deg, #d4a52a 0%, #f0d77a 50%, #c89b2a 100%)',
+            opacity: 0.35,
+            transform: 'rotate(-45deg)',
+            transformOrigin: 'center',
+            borderRadius: '70% 0 0 0',
+          }} />
+        </div>
 
-        {/* Gold Seal */}
+        {/* Gold Seal - self-contained SVG with unique gradient IDs */}
         <svg
           style={{ position: 'absolute', top: '42px', left: '42px' }}
           width="130"
           height="170"
           viewBox="0 0 130 170"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id="seal1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="certSealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#f0d77a" />
               <stop offset="25%" stopColor="#c89b2a" />
               <stop offset="50%" stopColor="#f0d77a" />
               <stop offset="75%" stopColor="#b8860b" />
               <stop offset="100%" stopColor="#d4a52a" />
             </linearGradient>
-            <linearGradient id="ribbon1" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="certRibbonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#c89b2a" />
               <stop offset="50%" stopColor="#b8860b" />
               <stop offset="100%" stopColor="#a67c00" />
             </linearGradient>
           </defs>
           {/* Ribbon tails */}
-          <polygon points="40,100 25,165 45,140 65,165 50,100" fill="url(#ribbon1)" />
-          <polygon points="60,100 50,165 70,140 90,165 80,100" fill="url(#ribbon1)" opacity="0.9" />
+          <polygon points="40,100 25,165 45,140 65,165 50,100" fill="url(#certRibbonGrad)" />
+          <polygon points="60,100 50,165 70,140 90,165 80,100" fill="url(#certRibbonGrad)" opacity="0.9" />
           {/* Seal starburst */}
           {Array.from({ length: 20 }, (_, i) => {
             const angle = (i * 18 * Math.PI) / 180;
@@ -138,11 +193,11 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
             );
           })}
           {/* Outer seal circle */}
-          <circle cx="65" cy="58" r="42" fill="url(#seal1)" stroke="#a67c00" strokeWidth="2" />
+          <circle cx="65" cy="58" r="42" fill="url(#certSealGrad)" stroke="#a67c00" strokeWidth="2" />
           <circle cx="65" cy="58" r="36" fill="none" stroke="#fef3c7" strokeWidth="1" opacity="0.6" />
           <circle cx="65" cy="58" r="32" fill="none" stroke="#a67c00" strokeWidth="0.5" opacity="0.4" />
           {/* Inner circle */}
-          <circle cx="65" cy="58" r="26" fill="url(#seal1)" stroke="#fef3c7" strokeWidth="1" />
+          <circle cx="65" cy="58" r="26" fill="url(#certSealGrad)" stroke="#fef3c7" strokeWidth="1" />
           {/* Star in center */}
           <polygon
             points="65,38 69,50 82,50 72,58 76,70 65,62 54,70 58,58 48,50 61,50"
@@ -198,8 +253,9 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
             style={{
               fontSize: '44px',
               color: '#3d3424',
-              fontFamily: '"Brush Script MT", "Segoe Script", "Comic Sans MS", cursive',
-              fontWeight: 'normal',
+              fontFamily: 'Georgia, "Times New Roman", serif',
+              fontWeight: 'bold',
+              fontStyle: 'italic',
               lineHeight: '1.2',
               marginBottom: '4px',
               maxWidth: '600px',
@@ -211,12 +267,12 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
             {recipientName}
           </div>
 
-          {/* Decorative line under name */}
-          <svg width="400" height="20" viewBox="0 0 400 20" style={{ marginBottom: '16px' }}>
-            <line x1="20" y1="10" x2="180" y2="10" stroke="#c9a84c" strokeWidth="1" />
-            <line x1="220" y1="10" x2="380" y2="10" stroke="#c9a84c" strokeWidth="1" />
-            <polygon points="200,4 206,10 200,16 194,10" fill="#c9a84c" />
-          </svg>
+          {/* Decorative line under name - CSS divs instead of SVG */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', width: '400px' }}>
+            <div style={{ flex: 1, height: '1px', background: '#c9a84c' }} />
+            <div style={{ width: '12px', height: '12px', background: '#c9a84c', transform: 'rotate(45deg)' }} />
+            <div style={{ flex: 1, height: '1px', background: '#c9a84c' }} />
+          </div>
 
           {/* Recognition text */}
           <div
@@ -259,15 +315,17 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
           >
             {/* Left signature */}
             <div style={{ textAlign: 'center' }}>
-              <svg width="120" height="35" viewBox="0 0 120 35">
-                <path
-                  d="M10,25 C20,10 30,20 40,15 S60,22 70,12 S90,20 105,18"
-                  fill="none"
-                  stroke="#3d3424"
-                  strokeWidth="1.5"
-                  opacity="0.7"
-                />
-              </svg>
+              <div style={{ width: '120px', height: '30px', margin: '0 auto' }}>
+                <svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M10,20 C20,8 30,18 40,12 S60,20 70,10 S90,18 105,15"
+                    fill="none"
+                    stroke="#3d3424"
+                    strokeWidth="1.5"
+                    opacity="0.7"
+                  />
+                </svg>
+              </div>
               <div style={{ borderTop: '1px solid #c9a84c', paddingTop: '6px', width: '150px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#5c5040', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
                   {signatoryName || 'Panchayat President'}
@@ -279,15 +337,17 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
             </div>
             {/* Right signature */}
             <div style={{ textAlign: 'center' }}>
-              <svg width="120" height="35" viewBox="0 0 120 35">
-                <path
-                  d="M15,20 C25,28 35,10 50,18 S70,8 80,22 S100,12 110,20"
-                  fill="none"
-                  stroke="#3d3424"
-                  strokeWidth="1.5"
-                  opacity="0.7"
-                />
-              </svg>
+              <div style={{ width: '120px', height: '30px', margin: '0 auto' }}>
+                <svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M15,18 C25,25 35,8 50,15 S70,6 80,20 S100,10 110,18"
+                    fill="none"
+                    stroke="#3d3424"
+                    strokeWidth="1.5"
+                    opacity="0.7"
+                  />
+                </svg>
+              </div>
               <div style={{ borderTop: '1px solid #c9a84c', paddingTop: '6px', width: '150px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#5c5040', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
                   Secretary
@@ -301,12 +361,15 @@ const CertificateTemplate = forwardRef<HTMLDivElement, CertificateProps>(
         </div>
 
         {/* Thin gold line at bottom */}
-        <svg
-          style={{ position: 'absolute', bottom: '28px', left: '30px', right: '30px', width: 'calc(100% - 60px)' }}
-          height="3"
-        >
-          <line x1="0" y1="1.5" x2="100%" y2="1.5" stroke="#c9a84c" strokeWidth="0.5" opacity="0.5" />
-        </svg>
+        <div style={{
+          position: 'absolute',
+          bottom: '28px',
+          left: '30px',
+          right: '30px',
+          height: '1px',
+          background: '#c9a84c',
+          opacity: 0.5,
+        }} />
       </div>
     );
   }
@@ -318,18 +381,44 @@ CertificateTemplate.displayName = 'CertificateTemplate';
 export function useDownloadCertificate() {
   const download = useCallback(async (element: HTMLElement, filename: string) => {
     try {
-      const canvas = await html2canvas(element, {
+      // Clone the element to a visible position for html2canvas
+      // (offscreen elements at left:-9999px can cause rendering issues)
+      const clone = element.cloneNode(true) as HTMLElement;
+      clone.style.position = 'fixed';
+      clone.style.top = '0';
+      clone.style.left = '0';
+      clone.style.zIndex = '-9999';
+      clone.style.opacity = '1';
+      clone.style.pointerEvents = 'none';
+      document.body.appendChild(clone);
+
+      // Give the browser a frame to lay out the clone
+      await new Promise<void>(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+
+      const canvas = await html2canvas(clone, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#fdf8ef',
         logging: false,
         width: 1056,
         height: 748,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 1200,
+        windowHeight: 800,
       });
+
+      // Clean up clone
+      document.body.removeChild(clone);
+
       const link = document.createElement('a');
       link.download = `${filename}.png`;
       link.href = canvas.toDataURL('image/png', 1.0);
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
       return true;
     } catch (err) {
       console.error('Certificate download failed:', err);
