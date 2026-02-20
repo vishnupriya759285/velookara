@@ -50,14 +50,12 @@ export default function PanchayatSelector() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <button className="flex items-center gap-2 hover:opacity-80 transition-opacity text-left">
-          <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
-            <MapPin className="h-5 w-5" />
-          </div>
-          <div className="hidden sm:block">
+        <button className="flex items-center gap-2 bg-white/15 hover:bg-white/25 transition-all px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20 text-left">
+          <MapPin className="h-5 w-5 flex-shrink-0" />
+          <div>
             <div className="font-semibold text-sm leading-tight">{displayName}</div>
             <div className="text-xs text-green-100 leading-tight flex items-center gap-1">
-              {displaySubtitle}
+              {isSelected ? displaySubtitle : '📍 Click to select district & panchayat'}
               <ChevronRight className="h-3 w-3" />
             </div>
           </div>

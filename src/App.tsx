@@ -11,6 +11,9 @@ import MyIssues from './pages/MyIssues';
 import NoticeBoard from './pages/NoticeBoard';
 import AdminDashboard from './pages/AdminDashboard';
 import StrayDogReport from './pages/StrayDogReport';
+import EventManagement from './pages/EventManagement';
+import EventRegistration from './pages/EventRegistration';
+import EventsList from './pages/EventsList';
 import NotFound from './pages/NotFound';
 import OldAgePension from './pages/OldAgePension';
 import WidowPension from './pages/WidowPension';
@@ -53,6 +56,16 @@ function AppRoutes() {
           <Route path="/notices/vayomithram" element={<Vayomithram />} />
           <Route path="/notices/snehasparsham" element={<Snehasparsham />} />
           <Route path="/stray-dog-report" element={<StrayDogReport />} />
+          <Route path="/events" element={<EventsList />} />
+          <Route path="/events/:id/register" element={<EventRegistration />} />
+          <Route 
+            path="/admin/events" 
+            element={
+              <ProtectedRoute adminOnly>
+                <EventManagement />
+              </ProtectedRoute>
+            } 
+          />
           <Route 
             path="/post-issue" 
             element={

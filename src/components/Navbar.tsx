@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { Button } from './ui/button';
-import { Menu, X, LogOut, Home, FileText, MessageSquare, LayoutDashboard, Bell, PawPrint } from 'lucide-react';
+import { Menu, X, LogOut, Home, FileText, MessageSquare, LayoutDashboard, Bell, PawPrint, CalendarDays } from 'lucide-react';
 import { useState } from 'react';
 import PanchayatSelector from './PanchayatSelector';
 
@@ -42,6 +42,10 @@ export default function Navbar() {
               <PawPrint className="h-4 w-4" />
               <span>Stray Dogs</span>
             </Link>
+            <Link to="/events" className="flex items-center gap-2 hover:text-green-100 transition-colors">
+              <CalendarDays className="h-4 w-4" />
+              <span>Events</span>
+            </Link>
             
             {user ? (
               <>
@@ -59,10 +63,16 @@ export default function Navbar() {
                 )}
                 
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="flex items-center gap-2 hover:text-green-100 transition-colors">
-                    <LayoutDashboard className="h-4 w-4" />
-                    <span>Admin Dashboard</span>
-                  </Link>
+                  <>
+                    <Link to="/admin" className="flex items-center gap-2 hover:text-green-100 transition-colors">
+                      <LayoutDashboard className="h-4 w-4" />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                    <Link to="/admin/events" className="flex items-center gap-2 hover:text-green-100 transition-colors">
+                      <CalendarDays className="h-4 w-4" />
+                      <span>Manage Events</span>
+                    </Link>
+                  </>
                 )}
                 
                 <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/20">
@@ -138,6 +148,14 @@ export default function Navbar() {
                 <PawPrint className="h-4 w-4" />
                 <span>Stray Dog Report</span>
               </Link>
+              <Link
+                to="/events"
+                className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <CalendarDays className="h-4 w-4" />
+                <span>Events</span>
+              </Link>
               
               {user ? (
                 <>
@@ -163,14 +181,24 @@ export default function Navbar() {
                   )}
                   
                   {user.role === 'admin' && (
-                    <Link
-                      to="/admin"
-                      className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <LayoutDashboard className="h-4 w-4" />
-                      <span>Admin Dashboard</span>
-                    </Link>
+                    <>
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <LayoutDashboard className="h-4 w-4" />
+                        <span>Admin Dashboard</span>
+                      </Link>
+                      <Link
+                        to="/admin/events"
+                        className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <CalendarDays className="h-4 w-4" />
+                        <span>Manage Events</span>
+                      </Link>
+                    </>
                   )}
                   
                   <div className="border-t border-white/20 pt-2 mt-2">

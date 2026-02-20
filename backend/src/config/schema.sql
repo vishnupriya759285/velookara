@@ -78,6 +78,56 @@ CREATE INDEX IF NOT EXISTS idx_comments_issue_id ON comments(issue_id);
 CREATE INDEX IF NOT EXISTS idx_notices_created_by ON notices(created_by);
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
+-- Events Table (Panchayat Programs/Events)
+CREATE TABLE IF NOT EXISTS events (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    event_date TIMESTAMP NOT NULL,
+    event_end_date TIMESTAMP,
+    venue VARCHAR(255) NOT NULL,
+    district VARCHAR(100) NOT NULL,
+    panchayat VARCHAR(100) NOT NULL,
+    ward VARCHAR(100),
+    category VARCHAR(50) DEFAULT 'general' CHECK (category IN (
+        'general',
+        'health',
+        'education',
+        'agriculture',
+        'sports',
+        'cultural',
+        'meeting',
+        'workshop',
+        'awareness',
+        'other'
+    )),
+    max_participants INTEGER,
+    contact_phone VARCHAR(20),
+    contact_email VARCHAR(255),
+    created_by UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Event Registrations Table
+CREATE TABLE IF NOT EXISTS event_registrations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone VARCHAR(20) NOT NULL,
+    ward VARCHAR(100),
+    num_attendees INTEGER DEFAULT 1,
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(event_id, phone)
+);
+
+CREATE INDEX IF NOT EXISTS idx_events_district ON events(district);
+CREATE INDEX IF NOT EXISTS idx_events_panchayat ON events(panchayat);
+CREATE INDEX IF NOT EXISTS idx_events_created_by ON events(created_by);
+CREATE INDEX IF NOT EXISTS idx_event_registrations_event_id ON event_registrations(event_id);
+
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$

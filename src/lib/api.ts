@@ -131,3 +131,27 @@ export const usersAPI = {
   delete: (id: string) =>
     api.delete(`/users/${id}`),
 };
+
+// Events API
+export const eventsAPI = {
+  create: (data: any) =>
+    api.post('/events', data),
+  
+  getAll: (params?: { district?: string; panchayat?: string; page?: number; limit?: number }) =>
+    api.get('/events', { params }),
+  
+  getById: (id: string) =>
+    api.get(`/events/${id}`),
+  
+  update: (id: string, data: any) =>
+    api.put(`/events/${id}`, data),
+  
+  delete: (id: string) =>
+    api.delete(`/events/${id}`),
+  
+  register: (id: string, data: { name: string; phone: string; email?: string; ward?: string; num_attendees?: number }) =>
+    api.post(`/events/${id}/register`, data),
+  
+  getRegistrations: (id: string) =>
+    api.get(`/events/${id}/registrations`),
+};
