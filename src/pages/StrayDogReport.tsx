@@ -8,8 +8,8 @@ import { Textarea } from '../components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Alert, AlertDescription } from '../components/ui/alert';
-import { Heart, AlertCircle, CheckCircle, MapPin, Phone } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { Heart, AlertCircle, CheckCircle, Phone } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function StrayDogReport() {
   const [location, setLocation] = useState('');

@@ -21,7 +21,7 @@ import {
 
 export default function Home() {
   const { user, issues, notices } = useAuth();
-  const { displayName, displaySubtitle, isSelected, selectedDistrict } = usePanchayat();
+  const { displayName, displaySubtitle, isSelected } = usePanchayat();
 
   const stats = {
     totalIssues: issues.length,
