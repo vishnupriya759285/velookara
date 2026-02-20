@@ -7,6 +7,7 @@ import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import { UserPlus, MapPin, AlertCircle, MessageSquare, Bell, TrendingUp } from 'lucide-react';
+import { usePanchayat } from '../lib/PanchayatContext';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -16,6 +17,7 @@ export default function Register() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const { register, user } = useAuth();
+  const { displayName, isSelected } = usePanchayat();
   const navigate = useNavigate();
 
   // Redirect if already logged in
@@ -60,7 +62,7 @@ export default function Register() {
         <div className="text-center md:text-left space-y-6 order-2 md:order-1">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full">
             <MapPin className="h-4 w-4" />
-            <span className="text-sm">Velookara Panchayat Portal</span>
+            <span className="text-sm">{displayName}</span>
           </div>
           <h1 className="text-4xl md:text-5xl text-gray-800">
             Join Our Community
@@ -106,7 +108,7 @@ export default function Register() {
             <div className="text-center">
               <div className="text-4xl mb-3">🌟</div>
               <div className="text-gray-800 mb-2">Join 500+ Citizens</div>
-              <div className="text-sm text-gray-600">Making Kadupaserry a better place to live</div>
+              <div className="text-sm text-gray-600">Making {isSelected ? displayName.replace(' Panchayat', '') : 'Kerala'} a better place to live</div>
             </div>
           </div>
         </div>

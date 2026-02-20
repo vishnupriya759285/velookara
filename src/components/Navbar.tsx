@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { Button } from './ui/button';
-import { Menu, X, MapPin, LogOut, Home, FileText, MessageSquare, LayoutDashboard, Bell, PawPrint } from 'lucide-react';
+import { Menu, X, LogOut, Home, FileText, MessageSquare, LayoutDashboard, Bell, PawPrint } from 'lucide-react';
 import { useState } from 'react';
+import PanchayatSelector from './PanchayatSelector';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -19,16 +20,13 @@ export default function Navbar() {
     <nav className="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Title */}
-          <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-            <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
-              <MapPin className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="font-semibold text-lg">Velookara Panchayat</div>
-              <div className="text-xs text-green-100">Kadupaserry, Thrissur</div>
-            </div>
-          </Link>
+          {/* Logo and Panchayat Selector */}
+          <div className="flex items-center gap-3">
+            <Link to="/" className="hover:opacity-90 transition-opacity text-lg font-semibold hidden sm:block">
+              Kerala
+            </Link>
+            <PanchayatSelector />
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">

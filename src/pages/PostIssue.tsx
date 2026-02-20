@@ -124,7 +124,7 @@ export default function PostIssue() {
                   <Input
                     id="location"
                     type="text"
-                    placeholder="e.g., Near temple junction, Kadupaserry"
+                    placeholder="e.g., Near temple junction, Town center"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     required
@@ -232,7 +232,7 @@ export default function PostIssue() {
                     <div>
                       <p className="mb-1">For emergencies, please contact:</p>
                       <p>Emergency: 112</p>
-                      <p>Panchayat Office: +91 487 XXX XXXX</p>
+                      <p>Panchayat Office: Contact your local office</p>
                     </div>
                   </div>
                 </div>

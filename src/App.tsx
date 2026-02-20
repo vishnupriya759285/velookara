@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/AuthContext';
+import { PanchayatProvider } from './lib/PanchayatContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -88,9 +89,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <PanchayatProvider>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </PanchayatProvider>
     </Router>
   );
 }

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
+import { usePanchayat } from '../lib/PanchayatContext';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
@@ -20,6 +21,7 @@ import {
 
 export default function Home() {
   const { user, issues, notices } = useAuth();
+  const { displayName, displaySubtitle, isSelected, selectedDistrict } = usePanchayat();
 
   const stats = {
     totalIssues: issues.length,
@@ -50,11 +52,11 @@ export default function Home() {
                 Smart Rural Governance
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl">
-                Welcome to Velookara Panchayat
+                Welcome to {displayName}
               </h1>
               <p className="text-xl text-green-50">
                 Empowering our community through transparent communication. Report issues, track progress, 
-                and stay updated with official notices from Kadupaserry, Thrissur.
+                and stay updated with official notices{isSelected ? ` from ${displaySubtitle}` : ' across Kerala'}.
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
                 {user ? (
@@ -101,7 +103,7 @@ export default function Home() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1720086302615-b8fedd50d6d4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXJhbGElMjB2aWxsYWdlJTIwcnVyYWx8ZW58MXx8fHwxNzYwMTY0ODEzfDA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Velookara Panchayat"
+                  alt={displayName}
                   className="w-full h-80 object-cover"
                 />
               </div>
