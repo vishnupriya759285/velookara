@@ -604,39 +604,13 @@ smart-rural-issue-management/
 - **Region:** ap-southeast-2 (Sydney)
 - **Connection:** Session Pooler (IPv4/IPv6 compatible)
 
-### Deploy Your Own
-
-1. Fork this repository
-2. Create a [Supabase](https://supabase.com/) project and get the database URL
-3. Import the backend to Vercel with the environment variables from `.env`
-4. Import the frontend to Vercel (auto-detects Vite)
-5. Update `src/lib/api.ts` with your backend URL
-
----
-
-## 🎥 Demo Video
-
-> 📹 **[Watch the Full Demo on YouTube](https://youtu.be/your-demo-video-link)**
->
-> The demo covers:
-> - User registration and login flow
-> - Posting and tracking civic issues
-> - Admin dashboard with charts and management
-> - Event creation with QR code generation
-> - WhatsApp sharing of event registration links
-> - Government welfare scheme information pages
-> - Mobile responsive design showcase
-
-_Replace the YouTube link above with your actual demo video URL._
-
----
 
 ## 👥 Team Members
 
 | Name | Role | GitHub | Contribution |
 |------|------|--------|-------------|
 | **Vishnu Priya M.V** | Full-Stack Developer (Lead) | [@vishnupriya759285](https://github.com/vishnupriya759285) | Architecture, frontend, backend, deployment |
-|**Shadhina A A **| project coordinator | [[@shadina](https://github.com/shadina)]|databse designer|
+|**Shadhina A A **| project coordinator | [[@shadina-web](https://github.com/shadina-web)]|database designer|
 ---
 
 ## 🤖 AI Tools Used
