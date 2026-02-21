@@ -10,32 +10,12 @@ dns.setDefaultResultOrder('verbatim');
 
 const { Pool } = pg;
 
-// Create a connection pool with Supabase pooler configuration
-// Supports both DATABASE_URL and individual DB_* env vars
-let poolConfig;
+// Hardcoded Supabase pooler connection
+const DATABASE_URL = 'postgresql://postgres.xslittswdimlzzmheady:vishnupriya1234@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres';
 
-if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASSWORD) {
-  // Prefer individual vars (avoids shell interpretation issues)
-  console.log('🔧 Using individual DB_* env vars');
-  console.log(`   Host: ${process.env.DB_HOST}`);
-  console.log(`   User: ${process.env.DB_USER}`);
-  console.log(`   Database: ${process.env.DB_NAME || 'postgres'}`);
-  poolConfig = {
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT) || 5432,
-    database: process.env.DB_NAME || 'postgres',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-  };
-} else if (process.env.DATABASE_URL) {
-  console.log('🔧 Using DATABASE_URL connection string');
-  poolConfig = {
-    connectionString: process.env.DATABASE_URL,
-  };
-} else {
-  console.error('❌ No database configuration found! Set DB_HOST/DB_USER/DB_PASSWORD or DATABASE_URL');
-  process.exit(1);
-}
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL || DATABASE_URL,
+};
 
 const pool = new Pool({
   ...poolConfig,
