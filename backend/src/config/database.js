@@ -11,18 +11,29 @@ dns.setDefaultResultOrder('verbatim');
 const { Pool } = pg;
 
 // Create a connection pool with Supabase pooler configuration
-// Pool Size: 14 (max per user+db combination)
-// Max Client Connections: 200 (concurrent connections)
+// Supports both DATABASE_URL and individual DB_* env vars
+// (individual vars avoid issues with special chars like $$ in passwords)
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+    }
+  : {
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT) || 5432,
+      database: process.env.DB_NAME || 'postgres',
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+    };
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  ...poolConfig,
   ssl: {
     rejectUnauthorized: false // Required for Supabase
   },
-  // Connection pool settings optimized for Supabase
-  min: parseInt(process.env.DB_POOL_MIN) || 2,        // Minimum connections to keep open
-  max: parseInt(process.env.DB_POOL_MAX) || 14,       // Maximum connections (matches Supabase pool size)
-  idleTimeoutMillis: parseInt(process.env.DB_POOL_IDLE_TIMEOUT) || 30000, // 30 seconds
-  connectionTimeoutMillis: parseInt(process.env.DB_POOL_CONNECTION_TIMEOUT) || 10000 // 10 seconds
+  min: parseInt(process.env.DB_POOL_MIN) || 2,
+  max: parseInt(process.env.DB_POOL_MAX) || 14,
+  idleTimeoutMillis: parseInt(process.env.DB_POOL_IDLE_TIMEOUT) || 30000,
+  connectionTimeoutMillis: parseInt(process.env.DB_POOL_CONNECTION_TIMEOUT) || 10000
 });
 
 // Test the connection
