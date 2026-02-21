@@ -14,7 +14,7 @@ const { Pool } = pg;
 const DATABASE_URL = 'postgresql://postgres.xslittswdimlzzmheady:vishnupriya1234@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres';
 
 const poolConfig = {
-  connectionString: process.env.DATABASE_URL || DATABASE_URL,
+  connectionString: DATABASE_URL,
 };
 
 const pool = new Pool({
