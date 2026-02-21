@@ -4,7 +4,6 @@ A comprehensive full-stack web application for managing civic issues, events, pu
 
 > **Live Demo:** [https://velookara-w1vg.vercel.app](https://velookara-w1vg.vercel.app)  
 > **Backend API:** [https://velookara-ktoc.vercel.app/api](https://velookara-ktoc.vercel.app/api/health)  
-> **Demo Video:** [Watch on YouTube](https://youtu.be/your-demo-video-link)
 
 ---
 
@@ -177,30 +176,31 @@ Kerala has 941 grama panchayats, each handling thousands of civic complaints man
 ## 📸 Screenshots
 
 ### 1. Home Page
-![Home Page](docs/screenshots/home.png)
-> The landing page with issue statistics, category cards, recent notices, and a community overview.
+<img width="536" height="415" alt="image" src="https://github.com/user-attachments/assets/68ff6d3c-7f91-4524-badc-038ea3cee2ef" />
+
+<img width="653" height="610" alt="image" src="https://github.com/user-attachments/assets/afaa2df3-ccfe-4266-9eb7-49e4150502cf" />
+
 
 ### 2. Issue Reporting Form
-![Post Issue](docs/screenshots/post-issue.png)
-> Citizens can report issues by selecting category, priority, district, panchayat, and ward.
+<img width="1569" height="904" alt="image" src="https://github.com/user-attachments/assets/ccad58e1-831d-4c92-b085-f96929c42499" />
 
 ### 3. Events & Programs with QR Code
-![Events](docs/screenshots/events.png)
-> Browse upcoming events, register via QR codes, copy links, and share on WhatsApp.
+<img width="1831" height="897" alt="image" src="https://github.com/user-attachments/assets/27d50191-ec0d-405b-ace8-b88b91bd6d23" />
+<img width="1915" height="677" alt="image" src="https://github.com/user-attachments/assets/f5b450f0-2fce-43f1-a409-a2507d08d30c" />
+<img width="1656" height="647" alt="image" src="https://github.com/user-attachments/assets/8d8c3b08-7483-4f90-bfa0-cf880ef465d5" />
 
 ### 4. Admin Dashboard
-![Admin Dashboard](docs/screenshots/admin-dashboard.png)
-> Officials can manage all issues with status updates, priority changes, and statistics charts.
+<img width="1639" height="713" alt="image" src="https://github.com/user-attachments/assets/1259ba3b-7623-48a7-8b11-adddcc405250" />
+
 
 ### 5. Notice Board
-![Notice Board](docs/screenshots/notice-board.png)
-> Public announcements and official notices from panchayat officials.
+<img width="1620" height="902" alt="image" src="https://github.com/user-attachments/assets/e7899115-0484-4f55-9f95-58b5668a9934" />
+
 
 ### 6. Government Welfare Schemes
-![Schemes](docs/screenshots/schemes.png)
-> Information hub for pension schemes — Old Age, Widow, Agriculture, Disability, and more.
+<img width="1620" height="902" alt="image" src="https://github.com/user-attachments/assets/83623099-12b3-41ff-939e-7a4e5bc38a46" />
 
-> **💡 Note:** To add your own screenshots, capture them from the [live demo](https://velookara-w1vg.vercel.app) and place the images in the `docs/screenshots/` folder.
+
 
 ---
 
@@ -636,7 +636,7 @@ _Replace the YouTube link above with your actual demo video URL._
 | Name | Role | GitHub | Contribution |
 |------|------|--------|-------------|
 | **Vishnu Priya M.V** | Full-Stack Developer (Lead) | [@vishnupriya759285](https://github.com/vishnupriya759285) | Architecture, frontend, backend, deployment |
-
+|**Shadhina A A **| project coordinator | [[@shadina](https://github.com/shadina)]|databse designer|
 ---
 
 ## 🤖 AI Tools Used
