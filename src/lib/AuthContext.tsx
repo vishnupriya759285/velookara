@@ -41,7 +41,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string, phone?: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, phone?: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   issues: Issue[];
   notices: Notice[];
@@ -110,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, password: string, phone?: string): Promise<boolean> => {
+  const register = async (name: string, email: string, password: string, phone?: string): Promise<{ success: boolean; message?: string }> => {
     try {
       const response = await authAPI.register({ name, email, password, phone });
       if (response.data.success) {
@@ -119,13 +119,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         toast.success('Registration successful!');
-        return true;
+        return { success: true };
       }
-      return false;
+      return { success: false, message: response.data.message || 'Registration failed' };
     } catch (error: any) {
       console.error('Registration error:', error);
-      toast.error(error.response?.data?.message || 'Registration failed');
-      return false;
+      const msg = error.response?.data?.message || 'Registration failed. Please check your connection and try again.';
+      toast.error(msg);
+      return { success: false, message: msg };
     }
   };
 

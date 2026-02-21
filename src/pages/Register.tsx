@@ -47,11 +47,11 @@ export default function Register() {
       return;
     }
 
-    const success = await register(name, email, password, phone);
-    if (success) {
+    const result = await register(name, email, password, phone);
+    if (result.success) {
       navigate('/');
     } else {
-      setError('Registration failed. Please try again.');
+      setError(result.message || 'Registration failed. Please try again.');
     }
   };
 

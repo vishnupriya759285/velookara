@@ -6,9 +6,9 @@ import { authenticate, authorizeAdmin } from '../middleware/auth.js';
 const router = express.Router();
 
 // @route   POST /api/events
-// @desc    Create a new event (admin only)
-// @access  Private/Admin
-router.post('/', authenticate, authorizeAdmin, [
+// @desc    Create a new event (any logged-in user)
+// @access  Private
+router.post('/', authenticate, [
   body('title').trim().notEmpty().withMessage('Title is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
   body('event_date').notEmpty().withMessage('Event date is required'),
@@ -142,9 +142,9 @@ router.post('/:id/register', [
 });
 
 // @route   GET /api/events/:id/registrations
-// @desc    Get registrations for an event (admin only)
-// @access  Private/Admin
-router.get('/:id/registrations', authenticate, authorizeAdmin, async (req, res) => {
+// @desc    Get registrations for an event (event creator or admin)
+// @access  Private
+router.get('/:id/registrations', authenticate, async (req, res) => {
   try {
     const registrations = await Event.getRegistrations(req.params.id);
     const count = await Event.getRegistrationCount(req.params.id);

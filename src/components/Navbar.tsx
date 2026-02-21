@@ -63,17 +63,16 @@ export default function Navbar() {
                 )}
                 
                 {user.role === 'admin' && (
-                  <>
-                    <Link to="/admin" className="flex items-center gap-2 hover:text-green-100 transition-colors">
-                      <LayoutDashboard className="h-4 w-4" />
-                      <span>Admin Dashboard</span>
-                    </Link>
-                    <Link to="/admin/events" className="flex items-center gap-2 hover:text-green-100 transition-colors">
-                      <CalendarDays className="h-4 w-4" />
-                      <span>Manage Events</span>
-                    </Link>
-                  </>
+                  <Link to="/admin" className="flex items-center gap-2 hover:text-green-100 transition-colors">
+                    <LayoutDashboard className="h-4 w-4" />
+                    <span>Admin Dashboard</span>
+                  </Link>
                 )}
+                
+                <Link to="/admin/events" className="flex items-center gap-2 hover:text-green-100 transition-colors">
+                  <CalendarDays className="h-4 w-4" />
+                  <span>Manage Events</span>
+                </Link>
                 
                 <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/20">
                   <div className="text-right">
@@ -181,7 +180,6 @@ export default function Navbar() {
                   )}
                   
                   {user.role === 'admin' && (
-                    <>
                       <Link
                         to="/admin"
                         className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -190,16 +188,16 @@ export default function Navbar() {
                         <LayoutDashboard className="h-4 w-4" />
                         <span>Admin Dashboard</span>
                       </Link>
-                      <Link
-                        to="/admin/events"
-                        className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <CalendarDays className="h-4 w-4" />
-                        <span>Manage Events</span>
-                      </Link>
-                    </>
                   )}
+                  
+                  <Link
+                    to="/admin/events"
+                    className="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <CalendarDays className="h-4 w-4" />
+                    <span>Manage Events</span>
+                  </Link>
                   
                   <div className="border-t border-white/20 pt-2 mt-2">
                     <div className="px-2 py-1 text-sm">

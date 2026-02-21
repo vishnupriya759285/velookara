@@ -1,13 +1,17 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { usePanchayat } from '../lib/PanchayatContext';
 import { eventsAPI } from '../lib/api';
+import EventNavBar from '../components/EventNavBar';
+import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Progress } from '../components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
 import { keralaDistricts, getPanchayatsByDistrict } from '../lib/keralaData';
+import { toast } from 'sonner';
 import {
   Calendar,
   MapPin,
@@ -20,6 +24,11 @@ import {
   CalendarDays,
   UserPlus,
   Tag,
+  QrCode,
+  Copy,
+  Download,
+  MessageCircle,
+  Link as LinkIcon,
 } from 'lucide-react';
 
 interface EventData {
@@ -74,6 +83,7 @@ export default function EventsList() {
   const [filterPanchayat, setFilterPanchayat] = useState(selectedPanchayat || '');
   const [filterCategory, setFilterCategory] = useState('');
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [qrDialogEvent, setQrDialogEvent] = useState<EventData | null>(null);
 
   const panchayatOptions = filterDistrict ? getPanchayatsByDistrict(filterDistrict) : [];
 
@@ -137,8 +147,67 @@ export default function EventsList() {
     setFilterCategory('');
   };
 
+  const getRegistrationUrl = (eventId: string) => {
+    return `${window.location.origin}/events/${eventId}/register`;
+  };
+
+  const copyLink = (eventId: string) => {
+    navigator.clipboard.writeText(getRegistrationUrl(eventId));
+    toast.success('Registration link copied!');
+  };
+
+  const shareToWhatsApp = (event: EventData) => {
+    const url = getRegistrationUrl(event.id);
+    const date = formatDate(event.event_date);
+    const text = [
+      `📢 *${event.title}*`,
+      '',
+      `📅 ${date}`,
+      `📍 ${event.venue}, ${event.panchayat}`,
+      event.ward ? `🏘️ ${event.ward}` : '',
+      '',
+      event.description.substring(0, 200),
+      '',
+      `👉 *Register here:*`,
+      url,
+      '',
+      `No login needed — just fill the form!`,
+    ].filter(Boolean).join('\n');
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const downloadQR = useCallback((eventId: string, eventTitle: string) => {
+    const canvas = document.getElementById(`qr-list-${eventId}`) as HTMLCanvasElement;
+    if (!canvas) return;
+    const dlCanvas = document.createElement('canvas');
+    const size = 500;
+    dlCanvas.width = size;
+    dlCanvas.height = size + 60;
+    const ctx = dlCanvas.getContext('2d');
+    if (!ctx) return;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, dlCanvas.width, dlCanvas.height);
+    ctx.drawImage(canvas, 25, 10, size - 50, size - 50);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = 'bold 16px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    const label = eventTitle.length > 40 ? eventTitle.substring(0, 37) + '...' : eventTitle;
+    ctx.fillText(label, size / 2, size - 15);
+    ctx.fillStyle = '#666666';
+    ctx.font = '13px Arial, sans-serif';
+    ctx.fillText('Scan to Register', size / 2, size + 5);
+    const link = document.createElement('a');
+    link.download = `${eventTitle.replace(/[^a-zA-Z0-9]/g, '_')}_QR.png`;
+    link.href = dlCanvas.toDataURL('image/png');
+    link.click();
+    toast.success('QR code downloaded!');
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-gray-50">
+      {/* Event Navigation Bar */}
+      <EventNavBar />
+
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-green-600 via-green-700 to-emerald-700 text-white">
         <div className="container mx-auto px-4 py-10 md:py-14">
@@ -372,9 +441,9 @@ export default function EventsList() {
                   {/* Top color bar */}
                   <div className={`h-1.5 ${upcoming ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 'bg-gray-300'}`} />
 
-                  <CardContent className="p-5 space-y-0">
+                  <CardContent className="p-6 space-y-0 overflow-hidden">
                     {/* Category + Status badges */}
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-3 gap-2">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${cat.bg} ${cat.text}`}>
                         <span className="text-sm leading-none">{cat.icon}</span>
                         <span className="capitalize">{event.category}</span>
@@ -392,23 +461,23 @@ export default function EventsList() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-[17px] font-bold text-gray-900 mb-1 leading-snug line-clamp-2 group-hover:text-green-700 transition-colors">
+                    <h3 className="text-[17px] font-bold text-gray-900 mb-1 leading-snug line-clamp-2 group-hover:text-green-700 transition-colors break-words">
                       {event.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-[13px] text-gray-500 mb-4 line-clamp-2 leading-relaxed">{event.description}</p>
+                    <p className="text-[13px] text-gray-500 mb-4 line-clamp-2 leading-relaxed break-words">{event.description}</p>
 
                     {/* Event details */}
-                    <div className="space-y-3 mb-4 border-t border-gray-100 pt-3">
+                    <div className="space-y-3 mb-4 border-t border-gray-100 pt-4 overflow-hidden">
                       {/* Date & Time */}
                       <div className="flex items-center gap-3">
                         <div className="h-9 w-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
                           <Calendar className="h-[18px] w-[18px] text-green-600" />
                         </div>
-                        <div className="min-w-0">
-                          <div className="text-sm font-semibold text-gray-800 leading-tight">{formatDate(event.event_date)}</div>
-                          <div className="text-xs text-gray-400 mt-0.5">{formatTime(event.event_date)}
+                        <div className="min-w-0 flex-1">
+                          <div className="text-sm font-semibold text-gray-800 leading-tight truncate">{formatDate(event.event_date)}</div>
+                          <div className="text-xs text-gray-400 mt-0.5 truncate">{formatTime(event.event_date)}
                             {event.event_end_date && ` — ${formatTime(event.event_end_date)}`}
                           </div>
                         </div>
@@ -419,9 +488,9 @@ export default function EventsList() {
                         <div className="h-9 w-9 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
                           <MapPin className="h-[18px] w-[18px] text-orange-500" />
                         </div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <div className="text-sm font-semibold text-gray-800 leading-tight truncate">{event.venue}</div>
-                          <div className="text-xs text-gray-400 mt-0.5">
+                          <div className="text-xs text-gray-400 mt-0.5 truncate">
                             {event.panchayat}, {event.district}
                             {event.ward && ` · ${event.ward}`}
                           </div>
@@ -434,12 +503,12 @@ export default function EventsList() {
                           <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
                             <Users className="h-[18px] w-[18px] text-violet-500" />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-baseline justify-between mb-1">
-                              <span className="text-sm font-semibold text-gray-800">
+                          <div className="flex-1 min-w-0 overflow-hidden">
+                            <div className="flex items-baseline justify-between mb-1 gap-2">
+                              <span className="text-sm font-semibold text-gray-800 truncate">
                                 {event.total_attendees} / {event.max_participants}
                               </span>
-                              <span className={`text-[11px] font-semibold ${isFull ? 'text-red-500' : 'text-gray-400'}`}>
+                              <span className={`text-[11px] font-semibold flex-shrink-0 ${isFull ? 'text-red-500' : 'text-gray-400'}`}>
                                 {isFull ? 'Full' : `${Math.round(spotsUsed)}% filled`}
                               </span>
                             </div>
@@ -491,17 +560,64 @@ export default function EventsList() {
                             )}
                           </Button>
                         </Link>
+                        {/* Share & QR buttons */}
+                        <div className="flex items-center gap-1.5">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 text-[11px] font-medium"
+                            onClick={() => copyLink(event.id)}
+                          >
+                            <Copy className="h-3 w-3 mr-1" /> Copy Link
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 text-[11px] font-medium text-green-700 border-green-200 hover:bg-green-50"
+                            onClick={() => shareToWhatsApp(event)}
+                          >
+                            <MessageCircle className="h-3 w-3 mr-1" /> WhatsApp
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 w-8 p-0"
+                            onClick={() => setQrDialogEvent(event)}
+                          >
+                            <QrCode className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
                       </div>
                     ) : upcoming && !event.is_active ? (
-                      <div className="border-t border-gray-100 pt-3">
+                      <div className="border-t border-gray-100 pt-3 space-y-2">
                         <Button className="w-full h-11 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed hover:bg-gray-100 text-[13px]" disabled>
                           Registration Closed
                         </Button>
+                        <div className="flex items-center gap-1.5">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 text-[11px] font-medium"
+                            onClick={() => copyLink(event.id)}
+                          >
+                            <Copy className="h-3 w-3 mr-1" /> Copy Link
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 w-8 p-0"
+                            onClick={() => setQrDialogEvent(event)}
+                          >
+                            <QrCode className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 bg-gray-50 rounded-lg px-3 py-2.5 border-t border-gray-100 mt-1">
-                        <Clock className="h-3.5 w-3.5" />
-                        Event ended · {event.registration_count} people registered
+                      <div className="border-t border-gray-100 pt-3 space-y-2">
+                        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 bg-gray-50 rounded-lg px-3 py-2.5">
+                          <Clock className="h-3.5 w-3.5" />
+                          Event ended · {event.registration_count} people registered
+                        </div>
                       </div>
                     )}
                   </CardContent>
@@ -511,6 +627,74 @@ export default function EventsList() {
           </div>
         )}
       </div>
+
+      {/* QR Code Dialog */}
+      <Dialog open={!!qrDialogEvent} onOpenChange={(open) => !open && setQrDialogEvent(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <QrCode className="h-5 w-5 text-green-700" />
+              Registration QR Code
+            </DialogTitle>
+            <DialogDescription>
+              Scan this QR code or share the link to register for the event.
+            </DialogDescription>
+          </DialogHeader>
+          {qrDialogEvent && (
+            <div className="flex flex-col items-center gap-4 py-4">
+              <h3 className="text-lg font-bold text-center">{qrDialogEvent.title}</h3>
+              <div className="bg-white p-4 rounded-xl shadow-md border-2 border-green-100">
+                <QRCodeCanvas
+                  id={`qr-list-${qrDialogEvent.id}`}
+                  value={getRegistrationUrl(qrDialogEvent.id)}
+                  size={220}
+                  level="H"
+                  includeMargin={true}
+                />
+              </div>
+              <p className="text-xs text-gray-500 text-center max-w-[260px]">
+                Point any phone camera at the QR code to open the registration form
+              </p>
+
+              {/* Registration link */}
+              <div className="w-full bg-green-50 border border-green-200 rounded-lg p-3">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <LinkIcon className="h-3.5 w-3.5 text-green-700" />
+                  <span className="text-xs font-bold text-green-800">Registration Link</span>
+                </div>
+                <div className="bg-white border border-green-300 rounded px-2.5 py-2 text-xs font-mono text-gray-600 truncate select-all">
+                  {getRegistrationUrl(qrDialogEvent.id)}
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full">
+                <Button
+                  size="sm"
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  onClick={() => downloadQR(qrDialogEvent.id, qrDialogEvent.title)}
+                >
+                  <Download className="h-4 w-4 mr-1" /> Download QR
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => copyLink(qrDialogEvent.id)}
+                >
+                  <Copy className="h-4 w-4 mr-1" /> Copy Link
+                </Button>
+              </div>
+              <Button
+                size="sm"
+                className="w-full bg-[#25D366] hover:bg-[#1da851] text-white"
+                onClick={() => shareToWhatsApp(qrDialogEvent)}
+              >
+                <MessageCircle className="h-4 w-4 mr-1" /> Share on WhatsApp
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -20,6 +20,7 @@ import {
   Mail,
   Home,
 } from 'lucide-react';
+import EventNavBar from '../components/EventNavBar';
 
 interface EventData {
   id: string;
@@ -189,7 +190,11 @@ export default function EventRegistration() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100">
+      {/* Event Navigation Bar */}
+      <EventNavBar />
+
+      <div className="py-8 px-4">
       <div className="container mx-auto max-w-2xl">
         {/* Event Details Card */}
         <Card className="mb-6 overflow-hidden">
@@ -321,6 +326,7 @@ export default function EventRegistration() {
             )}
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   );

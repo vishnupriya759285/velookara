@@ -3,7 +3,8 @@
 A comprehensive full-stack web application for managing civic issues, events, public notices, and government welfare schemes in rural panchayats across Kerala, India. Citizens can report infrastructure problems, register for events via QR codes, and access information about government pension/welfare schemes — all from a single platform.
 
 > **Live Demo:** [https://velookara-w1vg.vercel.app](https://velookara-w1vg.vercel.app)  
-> **Backend API:** [https://velookara-ktoc.vercel.app/api](https://velookara-ktoc.vercel.app/api/health)
+> **Backend API:** [https://velookara-ktoc.vercel.app/api](https://velookara-ktoc.vercel.app/api/health)  
+> **Demo Video:** [Watch on YouTube](https://youtu.be/your-demo-video-link)
 
 ---
 
@@ -22,6 +23,7 @@ A comprehensive full-stack web application for managing civic issues, events, pu
 - [Deployment](#-deployment)
 - [Demo Video](#-demo-video)
 - [Team Members](#-team-members)
+- [AI Tools Used](#-ai-tools-used)
 - [License](#-license)
 
 ---
@@ -31,12 +33,24 @@ A comprehensive full-stack web application for managing civic issues, events, pu
 Rural panchayats in Kerala face challenges in managing civic complaints, organizing community events, and disseminating public information efficiently. This system digitizes the entire workflow:
 
 - **Citizens** register and report issues (road damage, water supply, sanitation, etc.) with location details
-- **Admins** (panchayat officials) manage issues, publish notices, and organize events
-- **Events** support QR-code-based registration and WhatsApp sharing
+- **Panchayat officials (Admins)** manage issues, publish notices, and organize events
+- **Events** support QR-code-based public registration and WhatsApp sharing — no login needed to register
 - **Government schemes** information (pensions, welfare programs) is accessible to all users
 - **Dynamic panchayat selector** covers all 14 districts of Kerala with local body lookup
 
 The platform is mobile-responsive, supports role-based access control, and is deployed on Vercel with a Supabase PostgreSQL backend.
+
+### Problem Statement
+
+Kerala has 941 grama panchayats, each handling thousands of civic complaints manually. Paper-based tracking leads to delayed resolution, lack of transparency, and poor citizen engagement. This platform solves these problems by providing a digital-first approach to rural governance.
+
+### Key Objectives
+
+1. Enable citizens to report and track civic issues digitally
+2. Provide officials with real-time dashboards for issue management
+3. Simplify event organization with QR-code registration
+4. Centralize access to government welfare scheme information
+5. Support offline-friendly, mobile-first design for rural users
 
 ---
 
@@ -49,7 +63,7 @@ The platform is mobile-responsive, supports role-based access control, and is de
 | **TypeScript** | Static type checking |
 | **Vite 6** | Build tool & dev server |
 | **Tailwind CSS v4** | Utility-first CSS framework |
-| **shadcn/ui (Radix UI)** | Accessible UI component library |
+| **shadcn/ui (Radix UI)** | 34+ accessible UI components |
 | **React Router DOM** | Client-side routing |
 | **Axios** | HTTP client for API calls |
 | **Recharts** | Charts & data visualization |
@@ -83,25 +97,29 @@ The platform is mobile-responsive, supports role-based access control, and is de
 
 ## ✨ Features
 
-1. **Issue Reporting & Tracking** — Citizens report civic issues with category, priority, location (district/panchayat/ward). Track status from pending → in-progress → resolved.
+1. **Issue Reporting & Tracking** — Citizens report civic issues with category, priority, and location (district/panchayat/ward). Track status from pending → in-progress → resolved.
 
-2. **Admin Dashboard** — Comprehensive dashboard with issue statistics, charts, user management, and status update controls.
+2. **Admin Dashboard** — Comprehensive dashboard with issue statistics, charts (Recharts), user management, and status update controls.
 
-3. **Event Management with QR Codes** — Admins create events; citizens register via QR codes. Supports categories (health, education, sports, cultural, etc.) with participant tracking.
+3. **Event Management with QR Codes** — Create events, generate registration QR codes, share via WhatsApp. Supports categories (health, education, sports, cultural, etc.) with participant tracking.
 
-4. **Public Notice Board** — Admins publish official notices and announcements viewable by all citizens.
+4. **Public Notice Board** — Publish official notices and announcements viewable by all citizens, with category and priority filters.
 
 5. **Dynamic Kerala Panchayat Selector** — All 14 districts of Kerala with full panchayat/municipality lookup for location-specific issue and event filtering.
 
-6. **Government Welfare Schemes** — Information pages for Agriculture Pension, Old Age Pension, Widow Pension, Disability Pension, Unmarried Women Pension, Snehasparsham, and Vayomithram.
+6. **Government Welfare Schemes** — Information pages for 7 schemes: Agriculture Pension, Old Age Pension, Widow Pension, Disability Pension, Unmarried Women Pension, Snehasparsham, and Vayomithram.
 
 7. **Role-Based Access Control** — Two roles: `citizen` (report issues, register events) and `admin` (full management access).
 
-8. **JWT Authentication** — Secure token-based login/register with password hashing and protected API routes.
+8. **JWT Authentication** — Secure token-based login/register with bcrypt password hashing and protected API routes.
 
-9. **WhatsApp Event Sharing** — Share event details and registration links directly via WhatsApp.
+9. **WhatsApp Event Sharing** — Share event details and QR registration links directly via WhatsApp to ward groups.
 
-10. **Responsive Design** — Fully mobile-responsive UI with modern glassmorphism effects and smooth animations.
+10. **Stray Dog Reporting** — Dedicated reporting module for stray dog sightings with location tracking.
+
+11. **Responsive Design** — Fully mobile-responsive UI with modern glassmorphism effects and smooth animations. Works on all screen sizes.
+
+12. **Event Registration (No Login)** — Anyone can register for events via a public link or QR code — no account creation needed.
 
 ---
 
@@ -128,7 +146,7 @@ The platform is mobile-responsive, supports role-based access control, and is de
 │  │  Auth     │  │  Issues  │  │  Notices │  │    Events      │ │
 │  │  Routes   │  │  Routes  │  │  Routes  │  │    Routes      │ │
 │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬─────────┘ │
-│       └──────────────┼───────────┘                 │           │
+│       └──────────────┼────────────┘                │           │
 │                      ▼                             │           │
 │  ┌──────────────────────────────────┐              │           │
 │  │     Middleware Layer              │              │           │
@@ -152,29 +170,37 @@ The platform is mobile-responsive, supports role-based access control, and is de
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+> See also: [docs/architecture.md](docs/architecture.md) for detailed architecture notes.
+
 ---
 
 ## 📸 Screenshots
 
-### Home Page
+### 1. Home Page
 ![Home Page](docs/screenshots/home.png)
+> The landing page with issue statistics, category cards, recent notices, and a community overview.
 
-### Issue Reporting
+### 2. Issue Reporting Form
 ![Post Issue](docs/screenshots/post-issue.png)
+> Citizens can report issues by selecting category, priority, district, panchayat, and ward.
 
-### Events Listing with QR Registration
+### 3. Events & Programs with QR Code
 ![Events](docs/screenshots/events.png)
+> Browse upcoming events, register via QR codes, copy links, and share on WhatsApp.
 
-### Admin Dashboard
+### 4. Admin Dashboard
 ![Admin Dashboard](docs/screenshots/admin-dashboard.png)
+> Officials can manage all issues with status updates, priority changes, and statistics charts.
 
-### Notice Board
+### 5. Notice Board
 ![Notice Board](docs/screenshots/notice-board.png)
+> Public announcements and official notices from panchayat officials.
 
-### Government Schemes
+### 6. Government Welfare Schemes
 ![Schemes](docs/screenshots/schemes.png)
+> Information hub for pension schemes — Old Age, Widow, Agriculture, Disability, and more.
 
-> _Add your own screenshots to the `docs/screenshots/` folder._
+> **💡 Note:** To add your own screenshots, capture them from the [live demo](https://velookara-w1vg.vercel.app) and place the images in the `docs/screenshots/` folder.
 
 ---
 
@@ -187,77 +213,87 @@ The platform is mobile-responsive, supports role-based access control, and is de
 - **Git** ([Download](https://git-scm.com/))
 - **PostgreSQL** database (or use [Supabase](https://supabase.com/) free tier)
 
-### Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/vishnupriya759285/velookara.git
 cd velookara
 ```
 
-### Install Frontend Dependencies
+### 2. Install Frontend Dependencies
 
 ```bash
 npm install
 ```
 
-### Install Backend Dependencies
+### 3. Install Backend Dependencies
 
 ```bash
 cd backend
 npm install
+cd ..
 ```
 
-### Configure Environment Variables
+### 4. Configure Environment Variables
 
 Create `backend/.env`:
 
 ```env
+# Server
 PORT=5000
 NODE_ENV=development
+
+# Database - Supabase PostgreSQL
 DATABASE_URL=postgresql://your_user:your_password@your_host:5432/postgres
-JWT_SECRET=your_jwt_secret_here
+
+# JWT Secret
+JWT_SECRET=your_secret_key_here
+
+# Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:3000
 ```
 
-### Initialize Database
+### 5. Initialize Database
+
+The database tables are auto-created when the backend starts for the first time. Alternatively:
 
 ```bash
 cd backend
-npm run init-db
+node src/config/initDatabase.js
 ```
 
-This creates all required tables (users, issues, comments, notices, events, event_registrations).
+This creates all required tables: `users`, `issues`, `comments`, `notices`, `events`, `event_registrations`.
 
 ---
 
 ## ▶️ Run Commands
 
-### Start Backend Server
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start frontend dev server (http://localhost:3000) |
+| `npm run build` | Build frontend for production |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Run TypeScript type checking |
+| `cd backend && npm start` | Start backend server (http://localhost:5000) |
 
+### Quick Start (Both Servers)
+
+**Terminal 1 — Backend:**
 ```bash
 cd backend
 npm start
-# Server runs on http://localhost:5000
 ```
 
-### Start Frontend Dev Server
-
+**Terminal 2 — Frontend:**
 ```bash
-# From project root
 npm run dev
-# App runs on http://localhost:5173
 ```
 
-### Build for Production
+### Production Build
 
 ```bash
 npm run build
-```
-
-### Type Check
-
-```bash
-npm run lint
+# Output in dist/ folder
 ```
 
 ---
@@ -270,69 +306,74 @@ npm run lint
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/auth/register` | Register a new user | No |
-| POST | `/api/auth/login` | Login and receive JWT token | No |
-| GET | `/api/auth/me` | Get current user profile | Bearer Token |
-| PUT | `/api/auth/profile` | Update user profile | Bearer Token |
+| `POST` | `/api/auth/register` | Register a new user | Public |
+| `POST` | `/api/auth/login` | Login and receive JWT | Public |
+| `GET` | `/api/auth/me` | Get current user profile | Bearer Token |
+| `PUT` | `/api/auth/profile` | Update user profile | Bearer Token |
 
 ### Issues
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/issues` | Create a new issue | Bearer Token |
-| GET | `/api/issues` | List all issues (filterable, paginated) | No |
-| GET | `/api/issues/my-issues` | Get logged-in user's issues | Bearer Token |
-| GET | `/api/issues/stats/overview` | Get issue statistics | Admin |
-| GET | `/api/issues/:id` | Get issue by ID | No |
-| PUT | `/api/issues/:id` | Update an issue | Owner/Admin |
-| DELETE | `/api/issues/:id` | Delete an issue | Owner/Admin |
-| PUT | `/api/issues/:id/status` | Update issue status | Admin |
-| PUT | `/api/issues/:id/assign` | Assign issue to user | Admin |
-| POST | `/api/issues/:id/comments` | Add comment to issue | Bearer Token |
-| GET | `/api/issues/:id/comments` | Get issue comments | No |
+| `POST` | `/api/issues` | Create a new issue | Bearer Token |
+| `GET` | `/api/issues` | List all issues (filterable) | Public |
+| `GET` | `/api/issues/my-issues` | Get user's own issues | Bearer Token |
+| `GET` | `/api/issues/stats/overview` | Get issue statistics | Admin |
+| `GET` | `/api/issues/:id` | Get issue by ID | Public |
+| `PUT` | `/api/issues/:id` | Update an issue | Owner/Admin |
+| `DELETE` | `/api/issues/:id` | Delete an issue | Owner/Admin |
+| `PUT` | `/api/issues/:id/status` | Update issue status | Admin |
+| `POST` | `/api/issues/:id/comments` | Add comment to issue | Bearer Token |
+| `GET` | `/api/issues/:id/comments` | Get issue comments | Public |
 
 ### Notices
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/notices` | Create a notice | Admin |
-| GET | `/api/notices` | List all notices (paginated) | No |
-| GET | `/api/notices/:id` | Get notice by ID | No |
-| PUT | `/api/notices/:id` | Update a notice | Admin |
-| DELETE | `/api/notices/:id` | Delete a notice | Admin |
-
-### Users (Admin)
-
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/users` | List all users | Admin |
-| GET | `/api/users/stats/overview` | Get user statistics | Admin |
-| GET | `/api/users/:id` | Get user by ID | Admin |
-| PUT | `/api/users/:id/role` | Update user role | Admin |
-| PUT | `/api/users/:id/status` | Activate/deactivate user | Admin |
+| `POST` | `/api/notices` | Create a notice | Admin |
+| `GET` | `/api/notices` | List all notices | Public |
+| `GET` | `/api/notices/:id` | Get notice by ID | Public |
+| `PUT` | `/api/notices/:id` | Update a notice | Admin |
+| `DELETE` | `/api/notices/:id` | Delete a notice | Admin |
 
 ### Events
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/events` | Create an event | Admin |
-| GET | `/api/events` | List all events (filterable) | No |
-| GET | `/api/events/:id` | Get event by ID | No |
-| PUT | `/api/events/:id` | Update an event | Admin |
-| DELETE | `/api/events/:id` | Delete an event | Admin |
-| POST | `/api/events/:id/register` | Register for event | No |
-| GET | `/api/events/:id/registrations` | Get event registrations | Admin |
+| `POST` | `/api/events` | Create an event | Bearer Token |
+| `GET` | `/api/events` | List all events | Public |
+| `GET` | `/api/events/:id` | Get event by ID | Public |
+| `PUT` | `/api/events/:id` | Update an event | Admin |
+| `DELETE` | `/api/events/:id` | Delete an event | Admin |
+| `POST` | `/api/events/:id/register` | Register for event | Public |
+| `GET` | `/api/events/:id/registrations` | Get registrations | Bearer Token |
 
-### Health Check
+### Users (Admin)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | API status check |
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `GET` | `/api/users` | List all users | Admin |
+| `GET` | `/api/users/stats/overview` | User statistics | Admin |
+| `PUT` | `/api/users/:id/role` | Update user role | Admin |
 
 ### Authentication Header
 
 ```
 Authorization: Bearer <jwt_token>
+```
+
+### Example Request
+
+```bash
+# Register
+curl -X POST https://velookara-ktoc.vercel.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John", "email": "john@example.com", "password": "pass123"}'
+
+# Login
+curl -X POST https://velookara-ktoc.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "john@example.com", "password": "pass123"}'
 ```
 
 ---
@@ -342,22 +383,91 @@ Authorization: Bearer <jwt_token>
 ```sql
 -- 6 Tables in PostgreSQL (Supabase)
 
-users (id UUID PK, name, email UNIQUE, password, phone, role, created_at, updated_at)
-  ↓
-issues (id UUID PK, title, description, category, priority, status, district,
-        panchayat, ward, reporter_id FK→users, assigned_to, created_at, updated_at)
-  ↓
-comments (id UUID PK, issue_id FK→issues, user_id FK→users, text, created_at)
+users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  phone VARCHAR(20),
+  role VARCHAR(20) DEFAULT 'citizen',
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+)
 
-notices (id UUID PK, title, content, category, priority, author_id FK→users,
-         is_active, created_at, updated_at)
+issues (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR(200) NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  priority VARCHAR(20) DEFAULT 'medium',
+  status VARCHAR(20) DEFAULT 'pending',
+  district VARCHAR(100),
+  panchayat VARCHAR(100),
+  ward VARCHAR(50),
+  reporter_id UUID REFERENCES users(id),
+  assigned_to UUID REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+)
 
-events (id UUID PK, title, description, event_date, event_end_date, venue,
-        district, panchayat, ward, category, max_participants, contact_phone,
-        contact_email, created_by FK→users, is_active, created_at)
-  ↓
-event_registrations (id UUID PK, event_id FK→events, name, phone, email, ward,
-                     num_attendees, created_at)
+comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  issue_id UUID REFERENCES issues(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id),
+  text TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+)
+
+notices (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR(200) NOT NULL,
+  content TEXT NOT NULL,
+  category VARCHAR(50),
+  priority VARCHAR(20) DEFAULT 'normal',
+  author_id UUID REFERENCES users(id),
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+)
+
+events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR(200) NOT NULL,
+  description TEXT NOT NULL,
+  event_date TIMESTAMP NOT NULL,
+  event_end_date TIMESTAMP,
+  venue VARCHAR(200) NOT NULL,
+  district VARCHAR(100) NOT NULL,
+  panchayat VARCHAR(100) NOT NULL,
+  ward VARCHAR(50),
+  category VARCHAR(50) DEFAULT 'general',
+  max_participants INTEGER,
+  contact_phone VARCHAR(20),
+  contact_email VARCHAR(100),
+  created_by UUID REFERENCES users(id),
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW()
+)
+
+event_registrations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id UUID REFERENCES events(id) ON DELETE CASCADE,
+  name VARCHAR(100) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  email VARCHAR(100),
+  ward VARCHAR(50),
+  num_attendees INTEGER DEFAULT 1,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(event_id, phone)
+)
+```
+
+### Entity Relationship
+
+```
+users ──────┬── issues ──── comments
+            ├── notices
+            └── events ──── event_registrations
 ```
 
 ---
@@ -365,116 +475,201 @@ event_registrations (id UUID PK, event_id FK→events, name, phone, email, ward,
 ## 📁 Folder Structure
 
 ```
-velookara/
-├── README.md                  # Project documentation
-├── LICENSE                    # MIT License
-├── package.json               # Frontend dependencies
-├── vite.config.ts             # Vite build configuration
-├── tailwind.config.js         # Tailwind CSS configuration
-├── tsconfig.json              # TypeScript configuration
-├── index.html                 # HTML entry point
+smart-rural-issue-management/
+├── README.md                      # Project documentation (this file)
+├── LICENSE                        # MIT License
+├── .gitignore                     # Git ignore rules
+├── package.json                   # Frontend dependencies & scripts
+├── vite.config.ts                 # Vite build configuration
+├── tailwind.config.js             # Tailwind CSS configuration
+├── tsconfig.json                  # TypeScript configuration
+├── postcss.config.js              # PostCSS configuration
+├── index.html                     # HTML entry point
 │
-├── src/                       # Frontend source code
-│   ├── App.tsx                # Main app with routes
-│   ├── main.tsx               # React entry point
-│   ├── index.css              # Global styles
-│   ├── components/
-│   │   ├── Navbar.tsx         # Navigation bar
-│   │   ├── Footer.tsx         # Footer component
+├── src/                           # Frontend source code
+│   ├── App.tsx                    # Main app with route definitions
+│   ├── main.tsx                   # React entry point
+│   ├── index.css                  # Global styles
+│   │
+│   ├── components/                # Reusable UI components
+│   │   ├── Navbar.tsx             # Top navigation bar
+│   │   ├── Footer.tsx             # Site footer
+│   │   ├── EventNavBar.tsx        # Event section sub-navigation
 │   │   ├── PanchayatSelector.tsx  # District/Panchayat picker
-│   │   └── ui/               # shadcn/ui component library (34 components)
-│   ├── lib/
-│   │   ├── api.ts             # Axios API client & endpoints
-│   │   ├── AuthContext.tsx     # JWT auth context provider
-│   │   ├── PanchayatContext.tsx# Panchayat selection context
-│   │   └── keralaData.ts      # Kerala districts & panchayats data
-│   └── pages/
-│       ├── Home.tsx           # Landing page
-│       ├── Login.tsx          # Login page
-│       ├── Register.tsx       # Registration page
-│       ├── PostIssue.tsx      # Issue submission form
-│       ├── MyIssues.tsx       # User's reported issues
-│       ├── AdminDashboard.tsx # Admin panel
-│       ├── NoticeBoard.tsx    # Public notices
-│       ├── EventsList.tsx     # Community events listing
-│       ├── EventRegistration.tsx  # Event registration + QR
-│       ├── EventManagement.tsx    # Admin event CRUD
-│       └── ...                # Welfare scheme pages
+│   │   ├── CertificateTemplate.tsx# Event certificate generator
+│   │   └── ui/                    # shadcn/ui components (34 components)
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── dialog.tsx
+│   │       ├── select.tsx
+│   │       └── ... (30+ more)
+│   │
+│   ├── lib/                       # Utilities & context providers
+│   │   ├── api.ts                 # Axios API client & endpoint definitions
+│   │   ├── AuthContext.tsx         # JWT auth context provider
+│   │   ├── PanchayatContext.tsx    # Panchayat selection context
+│   │   └── keralaData.ts          # Kerala districts & panchayats dataset
+│   │
+│   ├── pages/                     # Page-level components (routes)
+│   │   ├── Home.tsx               # Landing page with stats
+│   │   ├── Login.tsx              # User login
+│   │   ├── Register.tsx           # User registration
+│   │   ├── PostIssue.tsx          # Issue submission form
+│   │   ├── MyIssues.tsx           # User's reported issues list
+│   │   ├── AdminDashboard.tsx     # Admin management panel
+│   │   ├── NoticeBoard.tsx        # Public notices listing
+│   │   ├── EventsList.tsx         # Events browsing with QR/share
+│   │   ├── EventRegistration.tsx  # Public event registration form
+│   │   ├── EventManagement.tsx    # Event CRUD management
+│   │   ├── StrayDogReport.tsx     # Stray dog reporting module
+│   │   ├── OldAgePension.tsx      # Old age pension scheme info
+│   │   ├── WidowPension.tsx       # Widow pension scheme info
+│   │   ├── DisabilityPension.tsx  # Disability pension info
+│   │   ├── AgriculturePension.tsx # Agriculture pension info
+│   │   ├── UnmarriedWomenPension.tsx # Unmarried women pension
+│   │   ├── Vayomithram.tsx        # Vayomithram scheme info
+│   │   ├── Snehasparsham.tsx      # Snehasparsham scheme info
+│   │   └── NotFound.tsx           # 404 page
+│   │
+│   └── styles/
+│       └── globals.css            # Global CSS with Tailwind directives
 │
-├── backend/                   # Backend API
-│   ├── package.json           # Backend dependencies
-│   ├── vercel.json            # Vercel serverless config
+├── backend/                       # Backend API
+│   ├── package.json               # Backend dependencies
+│   ├── vercel.json                # Vercel serverless configuration
 │   ├── api/
-│   │   └── index.js           # Vercel serverless entry
+│   │   └── index.js               # Vercel serverless entry point
 │   └── src/
-│       ├── server.js          # Express app setup
+│       ├── server.js              # Express app setup & middleware
 │       ├── config/
-│       │   ├── database.js    # PostgreSQL pool config
-│       │   ├── initDatabase.js# Schema initialization
-│       │   └── schema.sql     # SQL table definitions
+│       │   ├── database.js        # PostgreSQL connection pool
+│       │   ├── initDatabase.js    # Auto-create tables on startup
+│       │   └── schema.sql         # SQL table definitions
 │       ├── middleware/
-│       │   └── auth.js        # JWT authentication middleware
-│       ├── models/            # Database query layer
-│       └── routes/            # API route handlers
+│       │   └── auth.js            # JWT auth & role authorization middleware
+│       ├── models/                # Database query layer (ORM-like)
+│       │   ├── User.js            # User CRUD operations
+│       │   ├── Issue.js           # Issue CRUD + comments
+│       │   ├── Notice.js          # Notice CRUD operations
+│       │   ├── Event.js           # Event CRUD + registrations
+│       │   └── Comment.js         # Comment operations
+│       └── routes/                # Express route handlers
+│           ├── auth.js            # Authentication endpoints
+│           ├── issues.js          # Issue management endpoints
+│           ├── notices.js         # Notice management endpoints
+│           ├── events.js          # Event + registration endpoints
+│           └── users.js           # User management endpoints
 │
-└── docs/                      # Documentation & diagrams
-    ├── architecture.md        # Architecture overview
-    └── screenshots/           # App screenshots
+├── docs/                          # Documentation
+│   ├── architecture.md            # Detailed architecture notes
+│   └── screenshots/               # Application screenshots
+│       ├── home.png
+│       ├── post-issue.png
+│       ├── events.png
+│       ├── admin-dashboard.png
+│       ├── notice-board.png
+│       └── schemes.png
+│
+├── public/                        # Static assets (served by Vite)
+└── build/                         # Legacy build output
 ```
 
 ---
 
 ## 🚀 Deployment
 
+### Live URLs
+
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend** | [https://velookara-w1vg.vercel.app](https://velookara-w1vg.vercel.app) | ✅ Live |
+| **Backend API** | [https://velookara-ktoc.vercel.app/api](https://velookara-ktoc.vercel.app/api/health) | ✅ Live |
+| **Protocol** | HTTPS (TLS 1.3 via Vercel) | ✅ Secure |
+
 ### Frontend (Vercel)
 
-The frontend is deployed as a static Vite build on Vercel.
-
-- **Live URL:** [https://velookara-w1vg.vercel.app](https://velookara-w1vg.vercel.app)
 - **Build Command:** `tsc && vite build`
 - **Output Directory:** `dist`
+- **Framework Preset:** Vite
 
 ### Backend (Vercel Serverless)
 
-The Express.js backend runs as a Vercel serverless function.
-
-- **API URL:** [https://velookara-ktoc.vercel.app/api](https://velookara-ktoc.vercel.app/api/health)
 - **Root Directory:** `backend`
 - **Runtime:** Node.js (Vercel Serverless Functions)
+- **Entry Point:** `api/index.js`
 
 ### Database (Supabase)
 
 - **Provider:** Supabase (managed PostgreSQL)
 - **Region:** ap-southeast-2 (Sydney)
-- **Connection:** Session Pooler (IPv4 compatible)
+- **Connection:** Session Pooler (IPv4/IPv6 compatible)
+
+### Deploy Your Own
+
+1. Fork this repository
+2. Create a [Supabase](https://supabase.com/) project and get the database URL
+3. Import the backend to Vercel with the environment variables from `.env`
+4. Import the frontend to Vercel (auto-detects Vite)
+5. Update `src/lib/api.ts` with your backend URL
 
 ---
 
 ## 🎥 Demo Video
 
-> 📹 [Watch the demo video on YouTube](#)
-> 
-> _Replace the link above with your actual demo video URL._
+> 📹 **[Watch the Full Demo on YouTube](https://youtu.be/your-demo-video-link)**
+>
+> The demo covers:
+> - User registration and login flow
+> - Posting and tracking civic issues
+> - Admin dashboard with charts and management
+> - Event creation with QR code generation
+> - WhatsApp sharing of event registration links
+> - Government welfare scheme information pages
+> - Mobile responsive design showcase
+
+_Replace the YouTube link above with your actual demo video URL._
 
 ---
 
 ## 👥 Team Members
 
-| Name | Role | GitHub |
-|------|------|--------|
-| Vishnu Priya | Full-Stack Developer | [@vishnupriya759285](https://github.com/vishnupriya759285) |
+| Name | Role | GitHub | Contribution |
+|------|------|--------|-------------|
+| **Vishnu Priya M.V** | Full-Stack Developer (Lead) | [@vishnupriya759285](https://github.com/vishnupriya759285) | Architecture, frontend, backend, deployment |
 
 ---
 
 ## 🤖 AI Tools Used
 
-- **GitHub Copilot** — Used for code generation assistance, debugging, and deployment configuration
+| Tool | Usage |
+|------|-------|
+| **GitHub Copilot (Claude)** | Code generation assistance, debugging, component scaffolding, deployment configuration |
+
+> AI tools were used to accelerate development. All code was reviewed and validated by the developer.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**.
+
+```
+MIT License
+
+Copyright (c) 2026 Vishnu Priya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
+
+See the full [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -484,4 +679,16 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 - [Vercel](https://vercel.com/) — Frontend & backend deployment
 - [shadcn/ui](https://ui.shadcn.com/) — UI component library
 - [Tailwind CSS](https://tailwindcss.com/) — CSS framework
-- Kerala Government — Welfare scheme information
+- [Radix UI](https://www.radix-ui.com/) — Accessible primitives
+- [Lucide Icons](https://lucide.dev/) — Icon library
+- Kerala Government — Welfare scheme information & data
+
+---
+
+<div align="center">
+
+**Built with ❤️ for the rural communities of Kerala**
+
+[Live Demo](https://velookara-w1vg.vercel.app) · [Report Bug](https://github.com/vishnupriya759285/velookara/issues) · [Request Feature](https://github.com/vishnupriya759285/velookara/issues)
+
+</div>

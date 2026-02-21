@@ -61,7 +61,7 @@ function AppRoutes() {
           <Route 
             path="/admin/events" 
             element={
-              <ProtectedRoute adminOnly>
+              <ProtectedRoute>
                 <EventManagement />
               </ProtectedRoute>
             } 

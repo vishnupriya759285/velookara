@@ -27,6 +27,7 @@ import {
   Link as LinkIcon,
   MessageCircle,
 } from 'lucide-react';
+import EventNavBar from '../components/EventNavBar';
 
 interface EventData {
   id: string;
@@ -263,8 +264,11 @@ export default function EventManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gray-50">
+      {/* Event Navigation Bar */}
+      <EventNavBar />
+
+      <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
