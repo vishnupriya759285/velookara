@@ -11,7 +11,7 @@ dns.setDefaultResultOrder('verbatim');
 const { Pool } = pg;
 
 // Hardcoded Supabase pooler connection
-const DATABASE_URL = 'postgresql://postgres.xslittswdimlzzmheady:vishnupriya1234@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres';
+const DATABASE_URL = 'postgresql://postgres.ozaeshkknrdnmcmxsmyt:vishnupriya1234@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres';
 
 const poolConfig = {
   connectionString: DATABASE_URL,
